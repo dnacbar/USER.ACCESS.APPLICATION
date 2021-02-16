@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using HORTICROSSCUTTINGCORE.MIDDLEWARE;
 
 namespace HORTISESSIONCOMMAND
 {
@@ -20,6 +21,7 @@ namespace HORTISESSIONCOMMAND
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HORTISESSIONCOMMAND", Version = "v1" });
@@ -39,8 +41,11 @@ namespace HORTISESSIONCOMMAND
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HORTISESSIONCOMMAND v1"));
 
             app.UseRouting();
-
             app.UseAuthorization();
+
+            app.UseFatalExceptionMiddleware();
+            app.UseValidationExceptionMiddleware();
+            app.UseEntityFrameworkExceptionMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,10 +1,11 @@
 ﻿using HORTISESSIONCOMMANDREPOSITORY.MONGODBCONNECTION;
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.REPOSITORY;
+using HORTIUSERCOMMAND.DOMAIN.INTERFACE.SIGNATURE;
+using HORTIUSERCOMMAND.DOMAIN.MODEL.SIGNATURE;
 using HORTIUSERCOMMAND.REPOSITORY;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Threading;
 
 namespace HORTISESSIONCOMMAND
 {
@@ -34,6 +35,11 @@ namespace HORTISESSIONCOMMAND
         private static void ServicesRepository(IServiceCollection service)
         {
             service.AddScoped<ISessionRepository, SessionRepository>();
+        }
+
+        private static void ServicesModel(IServiceCollection service)
+        {
+            service.AddScoped<IUserSessionSignature, UserSessionSignature>();
         }
     }
 }

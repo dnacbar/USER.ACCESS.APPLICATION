@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Net;
 
-namespace HORTIUSERCOMMAND.DOMAIN.DOMAIN
+namespace HORTIUSERCOMMAND.DOMAIN.MODEL
 {
     public sealed class UserSession
     {
