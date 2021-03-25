@@ -6,14 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="INTERFACE\RESULT\" />
-    <Folder Include="MODEL\RESULT\" />
-    <Folder Include="SERVICE\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="HORTI.CROSSCUTTING.CORE" Version="1.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
+    <ProjectReference Include="..\HORTI.USER.CROSSCUTTING\HORTI.USER.CROSSCUTTING.csproj" />
   </ItemGroup>
 
 </Project>

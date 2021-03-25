@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HORTISESSIONCOMMANDDOMAIN\HORTIUSERCOMMAND.DOMAIN.csproj" />
     <ProjectReference Include="..\HORTISESSIONCOMMANDREPOSITORY\HORTIUSERCOMMAND.REPOSITORY.csproj" />
   </ItemGroup>
 

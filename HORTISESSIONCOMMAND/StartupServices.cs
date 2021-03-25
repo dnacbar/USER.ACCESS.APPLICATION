@@ -1,45 +1,52 @@
-﻿using HORTISESSIONCOMMANDREPOSITORY.MONGODBCONNECTION;
+﻿using HORTI.USER.CROSSCUTTING.DBBASEMONGO.CONNECTION;
+using HORTIUSERCOMMAND.APP;
+using HORTIUSERCOMMAND.DOMAIN.INTERFACE.APP;
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.REPOSITORY;
-using HORTIUSERCOMMAND.DOMAIN.INTERFACE.SIGNATURE;
-using HORTIUSERCOMMAND.DOMAIN.MODEL.SIGNATURE;
+using HORTIUSERCOMMAND.DOMAIN.INTERFACE.SERVICE;
+using HORTIUSERCOMMAND.DOMAIN.SERVICE;
+using HORTIUSERCOMMAND.DOMAIN.VALIDATION;
 using HORTIUSERCOMMAND.REPOSITORY;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace HORTISESSIONCOMMAND
+namespace HORTIUSERCOMMAND
 {
     public static class StartupServices
     {
         public static void Services(IServiceCollection service, IConfiguration configuration)
         {
             service.Configure<MongoDBHortiConnection>(configuration.GetSection(nameof(MongoDBHortiConnection)));
-            
+
             service.AddSingleton<IMongoDBHortiConnection>(x => x.GetRequiredService<IOptions<MongoDBHortiConnection>>().Value);
 
             ServicesApp(service);
-            ServicesDomainService(service);
+            ServicesDomain(service);
             ServicesRepository(service);
+            ServicesValidation(service);
         }
-        
+
         private static void ServicesApp(IServiceCollection service)
         {
-
+            service.AddScoped<IUserCommandApp, UserCommandApp>();
         }
 
-        private static void ServicesDomainService(IServiceCollection service)
+        private static void ServicesDomain(IServiceCollection service)
         {
-
+            service.AddScoped<IUserCommandService, UserCommandService>();
         }
 
         private static void ServicesRepository(IServiceCollection service)
         {
-            service.AddScoped<ISessionRepository, SessionRepository>();
+            service.AddScoped<ISessionCommandRepository, SessionCommandRepository>();
+            service.AddScoped<IUserCommandRepository, UserCommandRepository>();
         }
 
-        private static void ServicesModel(IServiceCollection service)
+        private static void ServicesValidation(IServiceCollection service)
         {
-            service.AddScoped<IUserSessionSignature, UserSessionSignature>();
+            service.AddScoped<CreateUserCommandValidation>();
+            service.AddScoped<DeleteUserCommandValidation>();
+            service.AddScoped<UpdateUserCommandValidation>();
         }
     }
 }

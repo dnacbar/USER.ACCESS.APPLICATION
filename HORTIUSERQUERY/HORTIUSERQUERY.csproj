@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\HORTIUSERQUERY.APP\HORTIUSERQUERY.APP.csproj" />
+    <ProjectReference Include="..\HORTIUSERQUERY.REPOSITORY\HORTIUSERQUERY.REPOSITORY.csproj" />
   </ItemGroup>
 
 </Project>

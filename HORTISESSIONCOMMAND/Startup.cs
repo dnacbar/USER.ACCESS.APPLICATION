@@ -1,15 +1,22 @@
+using HORTI.CORE.CROSSCUTTING.MIDDLEWARE;
+using HORTIUSERCOMMAND.REPOSITORY;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using HORTICROSSCUTTINGCORE.MIDDLEWARE;
+using System.IO.Compression;
 
-namespace HORTISESSIONCOMMAND
+namespace HORTIUSERCOMMAND
 {
     public class Startup
     {
+        private const string HortiUserCorsConfig = "HORTIUSERCORSCONFIG";
+        private const string HortiUserHeader = "HORTI-USER-COMMAND";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,12 +27,31 @@ namespace HORTISESSIONCOMMAND
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DBHORTIUSERCONTEXT>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DBHORTICONTEXT"));
+                opt.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+            });
+
+            services.AddCors(x => x.AddPolicy(HortiUserCorsConfig, p => { p.WithHeaders(HortiUserHeader); }));
+
+            services.AddResponseCompression(x =>
+            {
+                x.Providers.Add<BrotliCompressionProvider>();
+                x.Providers.Add<GzipCompressionProvider>();
+            });
+
+            services.Configure<BrotliCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
+            services.Configure<GzipCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
+
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HORTISESSIONCOMMAND", Version = "v1" });
-            });
+                Description = "WS REST - WEB API HORTIUSER COMMAND",
+                Title = "WS REST - WEB API HORTIUSER COMMAND",
+                Version = "v1"
+            }));
 
             StartupServices.Services(services, Configuration);
         }
@@ -36,11 +62,14 @@ namespace HORTISESSIONCOMMAND
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
+            app.UseResponseCompression();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HORTISESSIONCOMMAND v1"));
-
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WS REST  - HORTIUSER COMMAND"));
+            
             app.UseRouting();
+            app.UseCors(HortiUserCorsConfig);
+
             app.UseAuthorization();
 
             app.UseFatalExceptionMiddleware();

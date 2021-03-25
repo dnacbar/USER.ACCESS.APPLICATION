@@ -1,20 +1,27 @@
+using HORTI.CORE.CROSSCUTTING.MIDDLEWARE;
+using HORTIUSERCOMMAND.REPOSITORY;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Filters;
+using System.IO.Compression;
+using System.Text;
 
 namespace HORTIUSERQUERY
 {
     public class Startup
     {
+        private const string HortiUserCorsConfig = "HORTIUSERCORSCONFIG";
+        private const string HortiUserHeader = "HORTI-USER-QUERY";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,27 +32,84 @@ namespace HORTIUSERQUERY
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DBHORTIUSERCONTEXT>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DBHORTICONTEXT"));
+                opt.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+            });
+
+            services.AddCors(x => x.AddPolicy(HortiUserCorsConfig, p => { p.WithHeaders(HortiUserHeader); }));
+
+            services.AddResponseCompression(x =>
+            {
+                x.Providers.Add<BrotliCompressionProvider>();
+                x.Providers.Add<GzipCompressionProvider>();
+            });
+
+            services.Configure<BrotliCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
+            services.Configure<GzipCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HORTIUSERQUERY", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo
+                {
+                    Description = "WS REST - WEB API HORTIUSER QUERY",
+                    Title = "WS REST - WEB API HORTIUSER QUERY",
+                    Version = "v2"
+                });
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Bearer Token",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
+
+            var key = Encoding.ASCII.GetBytes("8FD8E9FAB6BD9732120ED54E873F85D668");
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            StartupServices.Services(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HORTIUSERQUERY v1"));
-            }
+
+            app.UseResponseCompression();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "WS REST  - HORTIUSER QUERY"));
+
 
             app.UseRouting();
+            app.UseCors(HortiUserCorsConfig);
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseFatalExceptionMiddleware();
+            app.UseValidationExceptionMiddleware();
+            app.UseEntityFrameworkExceptionMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
