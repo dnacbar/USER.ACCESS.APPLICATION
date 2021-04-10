@@ -4,7 +4,6 @@ using HORTIUSERQUERY.DOMAIN.INTERFACE.APP;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.RESULT;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.SERVICE;
-using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.APP
@@ -23,24 +22,31 @@ namespace HORTIUSERQUERY.APP
 
         public async Task<IUserAccessQueryResult> AuthenticateUserAccess(IUserAccessQuerySignature signature)
         {
-            var taskUserAccess = _userAccessQueryService.AuthenticateUserAccess(signature);
-            var taskCreatedSession = _sessionCommandService.CreateSessionService(new SessionCommandSignature
+            var userAccessResult = await _userAccessQueryService.AuthenticateUserAccess(signature);
+
+            var createdSessionResult = await _sessionCommandService.CreateSessionService(new SessionCommandSignature
             {
+                Token = userAccessResult.Token,
                 Login = signature.Login,
                 IpAddress = signature.IpAddress
             });
 
-            var userAccessResult = await taskUserAccess;
-            if (userAccessResult == null)
-                return null;
-
-            var createdSessionResult = await taskCreatedSession;
             if (createdSessionResult == null || string.IsNullOrEmpty(createdSessionResult.IdSession))
                 return null;
 
             userAccessResult.IdSession = createdSessionResult.IdSession;
 
             return userAccessResult;
+        }
+
+        public async Task LogoutUserAccess(IUserLogoutQuerySignature signature)
+        {
+            await _sessionCommandService.DeleteSessionService(new SessionCommandSignature
+            {
+                Token = signature.Token,
+                Login = signature.Login,
+                IdSession = signature.IdSession
+            });
         }
     }
 }

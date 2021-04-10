@@ -3,14 +3,13 @@ using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 
 namespace HORTIUSERQUERY.DOMAIN.VALIDATION
 {
-    public sealed class UserAccessQuerySignatureValidation : AbstractValidator<IUserAccessQuerySignature>
+    public sealed class UserLogoutQuerySignatureValidation : AbstractValidator<IUserLogoutQuerySignature>
     {
-        public UserAccessQuerySignatureValidation()
+        public UserLogoutQuerySignatureValidation()
         {
+            RuleFor(x => x.IdSession).NotEmpty();
             RuleFor(x => x.Login).NotEmpty();
-            RuleFor(x => x.Password).NotEmpty();
-            RuleFor(x => x.EmailObject).Must(x => x.IsValid());
-            RuleFor(x => x.PasswordObject).Must(x => x.IsValid());
+            RuleFor(x => x.Token).NotEmpty();
         }
     }
 }

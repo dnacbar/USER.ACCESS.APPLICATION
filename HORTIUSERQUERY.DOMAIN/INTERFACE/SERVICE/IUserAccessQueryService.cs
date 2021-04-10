@@ -7,5 +7,6 @@ namespace HORTIUSERQUERY.DOMAIN.INTERFACE.SERVICE
     public interface IUserAccessQueryService
     {
         Task<IUserAccessQueryResult> AuthenticateUserAccess(IUserAccessQuerySignature signature);
+        Task LogoutUserAccess(IUserLogoutQuerySignature signature);
     }
 }

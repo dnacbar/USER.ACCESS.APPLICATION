@@ -12,7 +12,7 @@ namespace HORTIUSERQUERY.DOMAIN.SERVICE
         public static string GenerateToken(UserSession userSession)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("8FD8E9FAB6BD9732120ED54E873F85D668");
+            var key = Encoding.ASCII.GetBytes("888AAE896C564B76E67703B2A3499AB0C8");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -20,7 +20,7 @@ namespace HORTIUSERQUERY.DOMAIN.SERVICE
                 {
                     new Claim(ClaimTypes.Name, string.Concat(userSession.DsLogin, userSession.DsPassword)),
                 }),
-                Expires = userSession.DtSessionLimit,
+                Expires = DateTime.MaxValue,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

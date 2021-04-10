@@ -14,17 +14,20 @@ namespace HORTIUSERQUERY.Controllers
     {
         private readonly IUserAccessQueryApp _userAccessQueryApp;
         private readonly UserAccessQuerySignatureValidation _userAccessQuerySignatureValidation;
-        
+        private readonly UserLogoutQuerySignatureValidation _userLogoutQuerySignatureValidation;
+
         public UserAccessController(IUserAccessQueryApp userAccessQueryApp,
-                                    UserAccessQuerySignatureValidation userAccessQuerySignatureValidation)
+                                    UserAccessQuerySignatureValidation userAccessQuerySignatureValidation,
+                                    UserLogoutQuerySignatureValidation userLogoutQuerySignatureValidation)
         {
             _userAccessQueryApp = userAccessQueryApp;
             _userAccessQuerySignatureValidation = userAccessQuerySignatureValidation;
+            _userLogoutQuerySignatureValidation = userLogoutQuerySignatureValidation;
         }
 
-        [HttpPost(nameof(AuthenticateUserAcess))]
+        [HttpPost(nameof(AuthenticateUserAccess))]
         [AllowAnonymous]
-        public async Task<IActionResult> AuthenticateUserAcess([FromBody] UserAccessQuerySignature signature)
+        public async Task<IActionResult> AuthenticateUserAccess([FromBody] UserAccessQuerySignature signature)
         {
             _userAccessQuerySignatureValidation.ValidateHorti(signature);
             signature.IpAddress = HttpContext.Connection.RemoteIpAddress.ToString();
@@ -33,14 +36,14 @@ namespace HORTIUSERQUERY.Controllers
             return Ok(result);
         }
 
-        [HttpPost(nameof(LogoutUserAcess))]
+        [HttpPost(nameof(LogoutUserAccess))]
         [Authorize]
-        public async Task<IActionResult> LogoutUserAcess([FromBody] UserAccessQuerySignature signature)
+        public async Task<IActionResult> LogoutUserAccess([FromBody] UserLogoutQuerySignature signature)
         {
-            //_userAccessQuerySignatureValidation.ValidateHorti(signature);
+            _userLogoutQuerySignatureValidation.ValidateHorti(signature);
 
-            //var result = await _userAccessQueryApp.AuthenticateUserAccess(signature, HttpContext);
-            return Ok();
+            await _userAccessQueryApp.LogoutUserAccess(signature);
+            return NoContent();
         }
     }
 }

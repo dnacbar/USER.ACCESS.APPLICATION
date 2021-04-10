@@ -55,6 +55,7 @@ namespace HORTIUSERQUERY
         {
             service.AddScoped<UserQuerySignatureValidation>();
             service.AddScoped<UserAccessQuerySignatureValidation>();
+            service.AddScoped<UserLogoutQuerySignatureValidation>();
         }
     }
 }

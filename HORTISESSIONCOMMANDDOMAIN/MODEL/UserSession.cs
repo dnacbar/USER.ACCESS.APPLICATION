@@ -15,6 +15,7 @@ namespace HORTIUSERCOMMAND.DOMAIN.MODEL
             DsLogin = signature.Login;
             IpAddress = signature.IpAddress.ToString();
             BoSessionExpire = signature.SessionExpire;
+            DsToken = signature.Token;
         }
 
         [BsonId]
@@ -23,9 +24,13 @@ namespace HORTIUSERCOMMAND.DOMAIN.MODEL
         public string DsLogin { get; set; }
         [BsonIgnore]
         public string DsPassword { get; set; }
-        public string IpAddress { get; set; }
         [BsonIgnore]
         public bool BoSessionExpire { get; set; }
-        public DateTime DtSessionLimit => BoSessionExpire ? DateTime.UtcNow.AddMinutes(Constant.SessionLimit) : DateTime.MaxValue;
+        public string DsToken { get; set; }
+        public string IpAddress { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public DateTime DtCreation => DateTime.Now;
+        [BsonRepresentation(BsonType.String)]
+        public DateTime DtSessionLimit => BoSessionExpire ? DateTime.Now.AddMinutes(Constant.SessionLimit) : DateTime.MaxValue;
     }
 }

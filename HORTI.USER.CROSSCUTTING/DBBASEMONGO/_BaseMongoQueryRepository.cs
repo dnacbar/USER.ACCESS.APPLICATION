@@ -1,5 +1,8 @@
 ﻿using HORTI.USER.CROSSCUTTING.DBBASEMONGO.CONNECTION;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HORTI.USER.CROSSCUTTING.DBBASEMONGO
@@ -8,8 +11,8 @@ namespace HORTI.USER.CROSSCUTTING.DBBASEMONGO
     {
         public _BaseMongoQueryRepository(IMongoDBHortiConnection connection) : base(connection) { }
 
-        public Task<IAsyncCursor<T>> DocumentByFilter(FilterDefinition<T> filter) => _mongoCollection.FindAsync(filter);
+        public Task<T> DocumentByFilter(Expression<Func<T, bool>> filter) => _mongoCollection.Find(filter).FirstOrDefaultAsync();
 
-        public Task<IAsyncCursor<T>> ListOfDocument() => _mongoCollection.FindAsync(x => true);
+        public Task<List<T>> ListOfDocument() => _mongoCollection.Find(x => true).ToListAsync();
     }
 }

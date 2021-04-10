@@ -6,7 +6,6 @@ namespace HORTIUSERCOMMAND.DOMAIN.INTERFACE.REPOSITORY
     public interface ISessionCommandRepository
     {
         Task<UserSession> CreateSessionAsync(UserSession userSession);
-
-        Task DeleteSessionAsync(string idSession);
+        Task DeleteSessionAsync(UserSession userSession);
     }
 }

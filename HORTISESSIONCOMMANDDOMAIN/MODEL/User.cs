@@ -1,4 +1,5 @@
-﻿using HORTIUSERCOMMAND.DOMAIN.INTERFACE.MODEL.SIGNATURE;
+﻿using HORTI.CORE.CROSSCUTTING.VALUEOBJECT;
+using HORTIUSERCOMMAND.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,5 +45,7 @@ namespace HORTIUSERCOMMAND.DOMAIN.MODEL
         public string DsPhone { get; set; }
         public DateTime DtCreation { get; set; }
         public DateTime DtAtualization { get; set; }
+
+        PhoneObject PhoneObject => new PhoneObject(DsPhone);
     }
 }

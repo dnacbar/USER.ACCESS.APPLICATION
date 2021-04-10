@@ -21,9 +21,9 @@ namespace HORTIUSERCOMMAND.DOMAIN.SERVICE
             return new CreatedSessionCommandResult(await _sessionCommandRepository.CreateSessionAsync(new UserSession(signature)));
         }
 
-        public Task DeleteSessionService(string idSession)
+        public Task DeleteSessionService(ISessionCommandSignature signature)
         {
-            return _sessionCommandRepository.DeleteSessionAsync(idSession);
+            return _sessionCommandRepository.DeleteSessionAsync(new UserSession(signature));
         }
     }
 }

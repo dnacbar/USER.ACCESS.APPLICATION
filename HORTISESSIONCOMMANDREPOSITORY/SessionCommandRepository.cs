@@ -8,10 +8,10 @@ namespace HORTIUSERCOMMAND.REPOSITORY
 {
     public sealed class SessionCommandRepository : _BaseMongoCommandRepository<UserSession>, ISessionCommandRepository
     {
-        public SessionCommandRepository(IMongoDBHortiConnection hortiConnection) : base(hortiConnection) { }
+        public SessionCommandRepository(IMongoDBHortiConnection connection) : base(connection) { }
 
         public Task<UserSession> CreateSessionAsync(UserSession userSession) => CreateDocument(userSession);
 
-        public Task DeleteSessionAsync(string idSession) => DeleteDocument(x => x.Id == idSession);
+        public Task DeleteSessionAsync(UserSession userSession) => DeleteDocument(x => x.Id == userSession.Id && x.DsToken == userSession.DsToken && x.DsLogin == userSession.DsLogin);
     }
 }

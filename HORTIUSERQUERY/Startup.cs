@@ -15,13 +15,14 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.IO.Compression;
 using System.Text;
+using System.Text.Json;
 
 namespace HORTIUSERQUERY
 {
     public class Startup
     {
         private const string HortiUserCorsConfig = "HORTIUSERCORSCONFIG";
-        private const string HortiUserHeader = "HORTI-USER-QUERY";
+        private string[] HortiUserHeader = { "content-type", "DN-MR-WASATAIN-COMMAND-QUERY" };
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,7 +39,11 @@ namespace HORTIUSERQUERY
                 opt.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
             });
 
-            services.AddCors(x => x.AddPolicy(HortiUserCorsConfig, p => { p.WithHeaders(HortiUserHeader); }));
+            services.AddCors(x => x.AddPolicy(HortiUserCorsConfig, p =>
+            {
+                p.WithOrigins("http://localhost:4200");
+                p.WithHeaders(HortiUserHeader);
+            }));
 
             services.AddResponseCompression(x =>
             {
@@ -49,7 +54,6 @@ namespace HORTIUSERQUERY
             services.Configure<BrotliCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
             services.Configure<GzipCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
 
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo
@@ -68,7 +72,7 @@ namespace HORTIUSERQUERY
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
-            var key = Encoding.ASCII.GetBytes("8FD8E9FAB6BD9732120ED54E873F85D668");
+            var key = Encoding.ASCII.GetBytes("888AAE896C564B76E67703B2A3499AB0C8");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,6 +90,8 @@ namespace HORTIUSERQUERY
                 };
             });
 
+            services.AddControllers().AddJsonOptions(x => { x.JsonSerializerOptions.PropertyNamingPolicy = null; });
+
             StartupServices.Services(services, Configuration);
         }
 
@@ -95,22 +101,19 @@ namespace HORTIUSERQUERY
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseResponseCompression();
-
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v2/swagger.json", "WS REST  - HORTIUSER QUERY"));
 
+            app.UseFatalExceptionMiddleware();
+            app.UseValidationExceptionMiddleware();
+            app.UseNotFoundExceptionMiddleware();
+            app.UseEntityFrameworkExceptionMiddleware();
 
             app.UseRouting();
             app.UseCors(HortiUserCorsConfig);
-
-            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseFatalExceptionMiddleware();
-            app.UseValidationExceptionMiddleware();
-            app.UseEntityFrameworkExceptionMiddleware();
-
+            app.UseResponseCompression();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

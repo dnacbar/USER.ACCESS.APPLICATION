@@ -1,4 +1,4 @@
-﻿using HORTIUSERCOMMAND.DOMAIN.MODEL;
+﻿using HORTI.CORE.CROSSCUTTING.EXCEPTION;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.RESULT;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.REPOSITORY;
@@ -21,9 +21,17 @@ namespace HORTIUSERQUERY.DOMAIN.SERVICE
         public async Task<IUserAccessQueryResult> AuthenticateUserAccess(IUserAccessQuerySignature signature)
         {
             if (!await _userQueryRepository.VerifyUserExists(signature.ToUser()))
-                return null;
+                throw new NotFoundException();
 
             return new UserAccessQueryResult(signature.Login, JwtTokenQueryService.GenerateToken(signature.ToUserSession()));
+        }
+
+        public async Task LogoutUserAccess(IUserLogoutQuerySignature signature)
+        {
+            if (true)
+            {
+
+            }
         }
     }
 }

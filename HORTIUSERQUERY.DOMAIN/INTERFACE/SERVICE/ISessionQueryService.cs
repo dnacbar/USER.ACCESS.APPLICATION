@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using HORTIUSERCOMMAND.DOMAIN.MODEL;
 using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.DOMAIN.INTERFACE.SERVICE
 {
-    interface ISessionQueryService
+    public interface ISessionQueryService
     {
+        Task<bool> GetUserSession(UserSession userSession);
     }
 }

@@ -16,7 +16,7 @@ namespace HORTIUSERCOMMAND
     public class Startup
     {
         private const string HortiUserCorsConfig = "HORTIUSERCORSCONFIG";
-        private const string HortiUserHeader = "HORTI-USER-COMMAND";
+        private string[] HortiUserHeader = { "content-type", "DN-MR-WASATAIN-COMMAND-QUERY" };
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,7 +33,11 @@ namespace HORTIUSERCOMMAND
                 opt.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
             });
 
-            services.AddCors(x => x.AddPolicy(HortiUserCorsConfig, p => { p.WithHeaders(HortiUserHeader); }));
+            services.AddCors(x => x.AddPolicy(HortiUserCorsConfig, p =>
+            {
+                p.WithOrigins("http://localhost:4200");
+                p.WithHeaders(HortiUserHeader);
+            }));
 
             services.AddResponseCompression(x =>
             {
@@ -44,14 +48,14 @@ namespace HORTIUSERCOMMAND
             services.Configure<BrotliCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
             services.Configure<GzipCompressionProviderOptions>(x => x.Level = CompressionLevel.Optimal);
 
-            services.AddControllers();
-
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Description = "WS REST - WEB API HORTIUSER COMMAND",
                 Title = "WS REST - WEB API HORTIUSER COMMAND",
                 Version = "v1"
             }));
+
+            services.AddControllers().AddJsonOptions(x => { x.JsonSerializerOptions.PropertyNamingPolicy = null; });
 
             StartupServices.Services(services, Configuration);
         }
@@ -62,20 +66,21 @@ namespace HORTIUSERCOMMAND
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseResponseCompression();
-
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WS REST  - HORTIUSER COMMAND"));
-            
-            app.UseRouting();
-            app.UseCors(HortiUserCorsConfig);
-
-            app.UseAuthorization();
 
             app.UseFatalExceptionMiddleware();
+            app.UseFatalExceptionMiddleware();
             app.UseValidationExceptionMiddleware();
+            app.UseNotFoundExceptionMiddleware();
             app.UseEntityFrameworkExceptionMiddleware();
 
+
+            app.UseRouting();
+            app.UseCors(HortiUserCorsConfig);
+            app.UseAuthorization();
+
+            app.UseResponseCompression();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

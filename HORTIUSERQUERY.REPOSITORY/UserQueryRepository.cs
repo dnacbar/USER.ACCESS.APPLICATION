@@ -1,8 +1,7 @@
-﻿using HORTI.CORE.CROSSCUTTING.DBCONTEXT;
+﻿using HORTI.CORE.CROSSCUTTING.DBBASEEF;
 using HORTI.CORE.CROSSCUTTING.ENCRYPTING;
 using HORTIUSERCOMMAND.DOMAIN.MODEL;
 using HORTIUSERCOMMAND.REPOSITORY;
-using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using HORTIUSERQUERY.DOMAIN.INTERFACE.REPOSITORY;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.REPOSITORY
 {
-    public sealed class UserQueryRepository : _BaseQueryRepository<User>, IUserQueryRepository
+    public sealed class UserQueryRepository : _BaseEFQueryRepository<User>, IUserQueryRepository
     {
         public UserQueryRepository(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT) : base(DBHORTIUSERCONTEXT) { }
 
