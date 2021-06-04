@@ -10,19 +10,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using System.IO.Compression;
 using System.Text;
-using System.Text.Json;
 
 namespace HORTIUSERQUERY
 {
     public class Startup
     {
         private const string HortiUserCorsConfig = "HORTIUSERCORSCONFIG";
-        private string[] HortiUserHeader = { "content-type", "DN-MR-WASATAIN-COMMAND-QUERY" };
+        private string[] HortiUserHeader = { "Content-Type", "Authorization", "DN-MR-WASATAIN-COMMAND-QUERY" };
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -62,14 +59,29 @@ namespace HORTIUSERQUERY
                     Title = "WS REST - WEB API HORTIUSER QUERY",
                     Version = "v2"
                 });
-                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Bearer Token",
                     In = ParameterLocation.Header,
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT"
                 });
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
 
             var key = Encoding.ASCII.GetBytes("888AAE896C564B76E67703B2A3499AB0C8");
@@ -108,9 +120,11 @@ namespace HORTIUSERQUERY
             app.UseValidationExceptionMiddleware();
             app.UseNotFoundExceptionMiddleware();
             app.UseEntityFrameworkExceptionMiddleware();
+            app.UseBadGatewayExceptionMiddleware();
 
             app.UseRouting();
             app.UseCors(HortiUserCorsConfig);
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseResponseCompression();

@@ -1,4 +1,6 @@
 ﻿using HORTI.USER.CROSSCUTTING.DBBASEMONGO.CONNECTION;
+using HORTICORE.PROXY;
+using HORTICORE.PROXY.INTERFACE;
 using HORTIUSERCOMMAND.APP;
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.APP;
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.REPOSITORY;
@@ -24,6 +26,7 @@ namespace HORTIUSERCOMMAND
             ServicesDomain(service);
             ServicesRepository(service);
             ServicesValidation(service);
+            ServicesProxy(service);
         }
 
         private static void ServicesApp(IServiceCollection service)
@@ -47,6 +50,11 @@ namespace HORTIUSERCOMMAND
             service.AddScoped<CreateUserCommandValidation>();
             service.AddScoped<DeleteUserCommandValidation>();
             service.AddScoped<UpdateUserCommandValidation>();
+        }
+
+        private static void ServicesProxy(IServiceCollection service)
+        {
+            service.AddScoped<IHortiCoreProxy, HortiCoreProxy>();
         }
     }
 }

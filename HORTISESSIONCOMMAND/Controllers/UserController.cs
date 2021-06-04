@@ -2,6 +2,7 @@
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.APP;
 using HORTIUSERCOMMAND.DOMAIN.MODEL.SIGNATURE;
 using HORTIUSERCOMMAND.DOMAIN.VALIDATION;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace HORTIUSERCOMMAND.Controllers
         }
 
         [HttpPost(nameof(CreateUser))]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommandSignature signature)
         {
             _createUserValidation.ValidateHorti(signature);
@@ -37,6 +39,7 @@ namespace HORTIUSERCOMMAND.Controllers
         }
 
         [HttpDelete(nameof(InactiveUser))]
+        [Authorize]
         public async Task<IActionResult> InactiveUser([FromBody] DeleteUserCommandSignature signature)
         {
             _deleteUserValidation.ValidateHorti(signature);
@@ -46,6 +49,7 @@ namespace HORTIUSERCOMMAND.Controllers
         }
 
         [HttpPut(nameof(UpdateUser))]
+        [Authorize]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommandSignature signature)
         {
             _updateUserValidation.ValidateHorti(signature);

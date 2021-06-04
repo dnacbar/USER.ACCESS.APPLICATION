@@ -45,5 +45,12 @@ namespace HORTIUSERQUERY.Controllers
             await _userAccessQueryApp.LogoutUserAccess(signature);
             return NoContent();
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Get()
+        {
+            return Ok();
+        }
     }
 }

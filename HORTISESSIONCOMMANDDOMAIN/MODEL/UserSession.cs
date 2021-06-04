@@ -1,4 +1,4 @@
-﻿using HORTI.USER.CROSSCUTTING.CONSTANT;
+﻿using HORTI.USER.CROSSCUTTING.HELPER;
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -12,8 +12,9 @@ namespace HORTIUSERCOMMAND.DOMAIN.MODEL
 
         public UserSession(ISessionCommandSignature signature)
         {
+            Id = signature.IdSession;
             DsLogin = signature.Login;
-            IpAddress = signature.IpAddress.ToString();
+            IpAddress = signature.IpAddress;
             BoSessionExpire = signature.SessionExpire;
             DsToken = signature.Token;
         }

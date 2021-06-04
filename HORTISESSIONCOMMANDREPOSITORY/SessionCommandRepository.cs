@@ -12,6 +12,6 @@ namespace HORTIUSERCOMMAND.REPOSITORY
 
         public Task<UserSession> CreateSessionAsync(UserSession userSession) => CreateDocument(userSession);
 
-        public Task DeleteSessionAsync(UserSession userSession) => DeleteDocument(x => x.Id == userSession.Id && x.DsToken == userSession.DsToken && x.DsLogin == userSession.DsLogin);
+        public Task DeleteSessionAsync(UserSession userSession) => DeleteDocument(x => x.Id == userSession.Id);
     }
 }

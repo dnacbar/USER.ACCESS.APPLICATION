@@ -18,9 +18,9 @@ namespace HORTIUSERQUERY.DOMAIN.SERVICE
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, string.Concat(userSession.DsLogin, userSession.DsPassword)),
+                    new Claim(ClaimTypes.Name, userSession.DsLogin),
                 }),
-                Expires = DateTime.MaxValue,
+                Expires = DateTime.UtcNow.AddYears(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

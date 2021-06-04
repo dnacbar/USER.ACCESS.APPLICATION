@@ -13,12 +13,12 @@ namespace HORTIUSERCOMMAND.DOMAIN.INTERFACE.MODEL.SIGNATURE
 
         public EmailObject EmailObject { get; }
         public PhoneObject PhoneObject { get; }
-        public PasswordObject  PasswordObject { get;  }
+        public PasswordObject PasswordObject { get; }
     }
 
     public interface IDeleteUserCommandSignature
     {
-        Guid Id { get; set; } 
+        Guid Id { get; set; }
         string Login { get; set; }
         string Password { get; set; }
 

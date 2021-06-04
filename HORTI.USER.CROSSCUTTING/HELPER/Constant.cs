@@ -1,4 +1,4 @@
-﻿namespace HORTI.USER.CROSSCUTTING.CONSTANT
+﻿namespace HORTI.USER.CROSSCUTTING.HELPER
 {
     public sealed class Constant
     {
