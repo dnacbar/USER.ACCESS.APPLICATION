@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.DOMAIN.SERVICE
 {
-    public sealed class UserQueryService : IUserQueryService
+    public sealed class UserService : IUserService
     {
-        private readonly IUserQueryRepository _userQueryRepository;
-        public UserQueryService(IUserQueryRepository userQueryRepository)
+        private readonly IUserRepository _userQueryRepository;
+        public UserService(IUserRepository userQueryRepository)
         {
             _userQueryRepository = userQueryRepository;
         }

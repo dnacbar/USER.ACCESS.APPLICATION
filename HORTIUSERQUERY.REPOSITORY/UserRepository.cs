@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.REPOSITORY
 {
-    public sealed class UserQueryRepository : _BaseEFQueryRepository<User>, IUserQueryRepository
+    public sealed class UserRepository : _BaseEFQueryRepository<User>, IUserRepository
     {
-        public UserQueryRepository(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT) : base(DBHORTIUSERCONTEXT) { }
+        public UserRepository(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT) : base(DBHORTIUSERCONTEXT) { }
 
         public Task<List<User>> ListOfUser(User user)
         {

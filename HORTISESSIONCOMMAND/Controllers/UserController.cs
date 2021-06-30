@@ -12,12 +12,12 @@ namespace HORTIUSERCOMMAND.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserCommandApp _userCommandApp;
+        private readonly IUserApp _userCommandApp;
         private readonly CreateUserCommandValidation _createUserValidation;
         private readonly DeleteUserCommandValidation _deleteUserValidation;
         private readonly UpdateUserCommandValidation _updateUserValidation;
 
-        public UserController(IUserCommandApp userCommandApp,
+        public UserController(IUserApp userCommandApp,
                               CreateUserCommandValidation createUserValidation,
                               DeleteUserCommandValidation deleteUserValidation,
                               UpdateUserCommandValidation updateUserValidation)

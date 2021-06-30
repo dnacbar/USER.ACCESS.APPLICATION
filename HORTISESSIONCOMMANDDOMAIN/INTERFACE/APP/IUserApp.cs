@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.DOMAIN.INTERFACE.APP
 {
-    public interface IUserCommandApp
+    public interface IUserApp
     {
         Task CreateUser(ICreateUserCommandSignature signature);
         Task InactiveUser(IDeleteUserCommandSignature signature);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.DOMAIN.INTERFACE.REPOSITORY
 {
-    public interface IUserQueryRepository
+    public interface IUserRepository
     {
         Task<bool> VerifyUserExists(User user);
         Task<List<User>> ListOfUser(User signature);    

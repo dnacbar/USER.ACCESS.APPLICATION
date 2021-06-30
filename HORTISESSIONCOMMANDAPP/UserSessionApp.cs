@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.APP
 {
-    public sealed class SessionCommandApp : ISessionCommandApp
+    public sealed class UserSessionApp : IUserSessionApp
     {
-        public SessionCommandApp() { }
+        public UserSessionApp() { }
 
-        public Task CreateSessionApp(ISessionCommandSignature signature)
+        public Task CreateSessionApp(IUserSessionCommandSignature signature)
         {
             return new Task(null);
         }
 
-        public Task DeleteSessionApp(ISessionCommandSignature signature)
+        public Task DeleteSessionApp(IUserSessionCommandSignature signature)
         {
             throw new NotImplementedException();
         }
 
-        private Task UpdateSessionApp(ISessionCommandSignature signature)
+        private Task UpdateSessionApp(IUserSessionCommandSignature signature)
         {
             return Task.Run(() => null);
         }

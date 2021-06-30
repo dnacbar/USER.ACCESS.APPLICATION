@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.REPOSITORY
 {
-    public sealed class SessionCommandRepository : _BaseMongoCommandRepository<UserSession>, ISessionCommandRepository
+    public sealed class UserSessionRepository : _BaseMongoCommandRepository<UserSession>, IUserSessionRepository
     {
-        public SessionCommandRepository(IMongoDBHortiConnection connection) : base(connection) { }
+        public UserSessionRepository(IMongoDBHortiConnection connection) : base(connection) { }
 
         public Task<UserSession> CreateSessionAsync(UserSession userSession) => CreateDocument(userSession);
 

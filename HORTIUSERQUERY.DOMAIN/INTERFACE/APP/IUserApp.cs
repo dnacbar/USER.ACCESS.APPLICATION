@@ -3,10 +3,10 @@ using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HORTIUSERQUERY.DOMAIN.INTERFACE.SERVICE
+namespace HORTIUSERQUERY.DOMAIN.INTERFACE.APP
 {
-    public interface IUserQueryService
+    public interface IUserApp
     {
-        Task<IEnumerable<IUserQueryResult>> CreateListOfUserResult(IUserQuerySignature signature);
+        Task<IEnumerable<IUserQueryResult>> GetListOfUser(IUserQuerySignature signature);
     }
 }

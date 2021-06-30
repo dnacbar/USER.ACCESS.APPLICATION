@@ -12,11 +12,11 @@ namespace HORTIUSERQUERY.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserQueryApp _userQueryApp;
-        private readonly UserQuerySignatureValidation _userQuerySignatureValidation;
+        private readonly IUserApp _userQueryApp;
+        private readonly UserSignatureValidation _userQuerySignatureValidation;
 
-        public UserController(IUserQueryApp userQueryApp,
-                              UserQuerySignatureValidation userQuerySignatureValidation)
+        public UserController(IUserApp userQueryApp,
+                              UserSignatureValidation userQuerySignatureValidation)
         {
             _userQueryApp = userQueryApp;
             _userQuerySignatureValidation = userQuerySignatureValidation;

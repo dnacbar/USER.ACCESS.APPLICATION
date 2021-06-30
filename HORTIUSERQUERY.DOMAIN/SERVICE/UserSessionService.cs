@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.DOMAIN.SERVICE
 {
-    public sealed class SessionQueryService : ISessionQueryService
+    public sealed class UserSessionService : IUserSessionService
     {
         public Task<bool> GetUserSession(UserSession userSession)
         {

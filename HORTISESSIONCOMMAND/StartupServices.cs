@@ -31,18 +31,18 @@ namespace HORTIUSERCOMMAND
 
         private static void ServicesApp(IServiceCollection service)
         {
-            service.AddScoped<IUserCommandApp, UserCommandApp>();
+            service.AddScoped<IUserApp, UserApp>();
         }
 
         private static void ServicesDomain(IServiceCollection service)
         {
-            service.AddScoped<IUserCommandService, UserCommandService>();
+            service.AddScoped<IUserService, UserService>();
         }
 
         private static void ServicesRepository(IServiceCollection service)
         {
-            service.AddScoped<ISessionCommandRepository, SessionCommandRepository>();
-            service.AddScoped<IUserCommandRepository, UserCommandRepository>();
+            service.AddScoped<IUserSessionRepository, UserSessionRepository>();
+            service.AddScoped<IUserRepository, UserRepository>();
         }
 
         private static void ServicesValidation(IServiceCollection service)

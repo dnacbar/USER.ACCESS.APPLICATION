@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.DOMAIN.SERVICE
 {
-    public sealed class UserAccessQueryService : IUserAccessQueryService
+    public sealed class UserAccessService : IUserAccessService
     {
-        private readonly IUserQueryRepository _userQueryRepository;
+        private readonly IUserRepository _userQueryRepository;
 
-        public UserAccessQueryService(IUserQueryRepository userQueryRepository)
+        public UserAccessService(IUserRepository userQueryRepository)
         {
             _userQueryRepository = userQueryRepository;
         }
@@ -23,7 +23,7 @@ namespace HORTIUSERQUERY.DOMAIN.SERVICE
             if (!await _userQueryRepository.VerifyUserExists(signature.ToUser()))
                 throw new NotFoundException();
 
-            return new UserAccessQueryResult(signature.Login, JwtTokenQueryService.GenerateToken(signature.ToUserSession()));
+            return new UserAccessQueryResult(signature.Login, JwtTokenService.GenerateToken(signature.ToUserSession()));
         }
 
         public async Task LogoutUserAccess(IUserLogoutQuerySignature signature)

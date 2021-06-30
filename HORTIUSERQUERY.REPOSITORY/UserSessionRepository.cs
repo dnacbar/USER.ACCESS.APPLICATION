@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.REPOSITORY
 {
-    public sealed class SessionQueryRepository : _BaseMongoQueryRepository<UserSession>
+    public sealed class UserSessionRepository : _BaseMongoQueryRepository<UserSession>
     {
-        public SessionQueryRepository(IMongoDBHortiConnection connection) : base(connection) { }
+        public UserSessionRepository(IMongoDBHortiConnection connection) : base(connection) { }
 
         public Task<UserSession> UserSessionByFilter(UserSession userSession)
         {

@@ -12,11 +12,11 @@ namespace HORTIUSERQUERY.Controllers
     [ApiController]
     public class UserAccessController : ControllerBase
     {
-        private readonly IUserAccessQueryApp _userAccessQueryApp;
+        private readonly IUserAccessApp _userAccessQueryApp;
         private readonly UserAccessQuerySignatureValidation _userAccessQuerySignatureValidation;
         private readonly UserLogoutQuerySignatureValidation _userLogoutQuerySignatureValidation;
 
-        public UserAccessController(IUserAccessQueryApp userAccessQueryApp,
+        public UserAccessController(IUserAccessApp userAccessQueryApp,
                                     UserAccessQuerySignatureValidation userAccessQuerySignatureValidation,
                                     UserLogoutQuerySignatureValidation userLogoutQuerySignatureValidation)
         {
@@ -47,7 +47,7 @@ namespace HORTIUSERQUERY.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Get()
         {
             return Ok();

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HORTIUSERQUERY.DOMAIN.SERVICE
 {
-    internal sealed class JwtTokenQueryService
+    internal sealed class JwtTokenService
     {
         public static string GenerateToken(UserSession userSession)
         {

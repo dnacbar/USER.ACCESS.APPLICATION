@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.REPOSITORY
 {
-    public sealed class UserCommandRepository : _BaseEFCommandRepository<User>, IUserCommandRepository
+    public sealed class UserRepository : _BaseEFCommandRepository<User>, IUserRepository
     {
-        public UserCommandRepository(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT) : base(DBHORTIUSERCONTEXT) { }
+        public UserRepository(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT) : base(DBHORTIUSERCONTEXT) { }
 
         public Task CreateUser(User user)
         {

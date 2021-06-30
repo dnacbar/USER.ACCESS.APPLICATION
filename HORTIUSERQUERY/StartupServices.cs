@@ -32,28 +32,28 @@ namespace HORTIUSERQUERY
 
         private static void ServicesApp(IServiceCollection service)
         {
-            service.AddScoped<IUserQueryApp, UserQueryApp>();
-            service.AddScoped<IUserAccessQueryApp, UserAccessQueryApp>();
+            service.AddScoped<IUserApp, UserApp>();
+            service.AddScoped<IUserAccessApp, UserAccessApp>();
         }
 
         private static void ServicesDomain(IServiceCollection service)
         {
-            service.AddScoped<IUserQueryService, UserQueryService>();
-            service.AddScoped<IUserAccessQueryService, UserAccessQueryService>();
+            service.AddScoped<DOMAIN.INTERFACE.SERVICE.IUserService, DOMAIN.SERVICE.UserService>();
+            service.AddScoped<IUserAccessService, UserAccessService>();
 
-            service.AddScoped<ISessionCommandService, SessionCommandService>();
+            service.AddScoped<HORTIUSERCOMMAND.DOMAIN.INTERFACE.SERVICE.IUserSessionService, HORTIUSERCOMMAND.DOMAIN.SERVICE.UserSessionService>();
         }
 
         private static void ServicesRepository(IServiceCollection service)
         {
-            service.AddScoped<IUserQueryRepository, UserQueryRepository>();
+            service.AddScoped<DOMAIN.INTERFACE.REPOSITORY.IUserRepository, REPOSITORY.UserRepository>();
 
-            service.AddScoped<ISessionCommandRepository, SessionCommandRepository>();
+            service.AddScoped<IUserSessionRepository, HORTIUSERCOMMAND.REPOSITORY.UserSessionRepository>();
         }
 
         private static void ServicesValidation(IServiceCollection service)
         {
-            service.AddScoped<UserQuerySignatureValidation>();
+            service.AddScoped<UserSignatureValidation>();
             service.AddScoped<UserAccessQuerySignatureValidation>();
             service.AddScoped<UserLogoutQuerySignatureValidation>();
         }

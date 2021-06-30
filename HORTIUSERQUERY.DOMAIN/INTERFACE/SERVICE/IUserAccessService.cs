@@ -2,9 +2,9 @@
 using HORTIUSERQUERY.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using System.Threading.Tasks;
 
-namespace HORTIUSERQUERY.DOMAIN.INTERFACE.APP
+namespace HORTIUSERQUERY.DOMAIN.INTERFACE.SERVICE
 {
-    public interface IUserAccessQueryApp
+    public interface IUserAccessService
     {
         Task<IUserAccessQueryResult> AuthenticateUserAccess(IUserAccessQuerySignature signature);
         Task LogoutUserAccess(IUserLogoutQuerySignature signature);

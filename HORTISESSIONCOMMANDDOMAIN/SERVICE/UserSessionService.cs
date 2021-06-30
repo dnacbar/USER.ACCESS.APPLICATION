@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.DOMAIN.SERVICE
 {
-    public sealed class SessionCommandService : ISessionCommandService
+    public sealed class UserSessionService : IUserSessionService
     {
-        private readonly ISessionCommandRepository _sessionCommandRepository;
-        public SessionCommandService(ISessionCommandRepository sessionCommandRepository)
+        private readonly IUserSessionRepository _sessionCommandRepository;
+        public UserSessionService(IUserSessionRepository sessionCommandRepository)
         {
             _sessionCommandRepository = sessionCommandRepository;
         }
 
-        public async Task<ICreatedSessionCommandResult> CreateSessionService(ISessionCommandSignature signature)
+        public async Task<ICreatedSessionCommandResult> CreateSessionService(IUserSessionCommandSignature signature)
         {
             return new CreatedSessionCommandResult(await _sessionCommandRepository.CreateSessionAsync(new UserSession(signature)));
         }
 
-        public Task DeleteSessionService(ISessionCommandSignature signature)
+        public Task DeleteSessionService(IUserSessionCommandSignature signature)
         {
             return _sessionCommandRepository.DeleteSessionAsync(new UserSession(signature));
         }

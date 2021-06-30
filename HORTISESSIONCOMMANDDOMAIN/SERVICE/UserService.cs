@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.DOMAIN.SERVICE
 {
-    public sealed class UserCommandService : IUserCommandService
+    public sealed class UserService : IUserService
     {
-        private readonly IUserCommandRepository _userCommandRepository;
-        public UserCommandService(IUserCommandRepository userCommandRepository)
+        private readonly IUserRepository _userCommandRepository;
+        public UserService(IUserRepository userCommandRepository)
         {
             _userCommandRepository = userCommandRepository;
         }

@@ -5,25 +5,21 @@ using HORTIUSERCOMMAND.DOMAIN.INTERFACE.MODEL.SIGNATURE;
 using HORTIUSERCOMMAND.DOMAIN.INTERFACE.SERVICE;
 using HORTIUSERCOMMAND.DOMAIN.MODEL;
 using HORTIUSERCOMMAND.REPOSITORY;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.APP
 {
-    public sealed class UserCommandApp : IUserCommandApp
+    public sealed class UserApp : IUserApp
     {
         private readonly DBHORTIUSERCONTEXT _DBHORTIUSERCONTEXT;
-        private readonly IConfiguration _configuration;
         private readonly IHortiCoreProxy _hortiCoreProxy;
-        private readonly IUserCommandService _userCommandService;
+        private readonly IUserService _userCommandService;
 
-        public UserCommandApp(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT,
-                            IConfiguration configuration,
+        public UserApp(DBHORTIUSERCONTEXT DBHORTIUSERCONTEXT,
                             IHortiCoreProxy hortiCoreProxy,
-                            IUserCommandService userCommandService)
+                            IUserService userCommandService)
         {
             _DBHORTIUSERCONTEXT = DBHORTIUSERCONTEXT;
-            _configuration = configuration;
             _hortiCoreProxy = hortiCoreProxy;
             _userCommandService = userCommandService;
 

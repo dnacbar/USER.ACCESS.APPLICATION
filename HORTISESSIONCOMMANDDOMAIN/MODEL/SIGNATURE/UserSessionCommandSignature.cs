@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace HORTIUSERCOMMAND.DOMAIN.MODEL.SIGNATURE
 {
-    public sealed class SessionCommandSignature : ISessionCommandSignature
+    public sealed class UserSessionCommandSignature : IUserSessionCommandSignature
     {
         public string Login { get; set; }
         public string Token { get; set; }

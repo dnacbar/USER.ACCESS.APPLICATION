@@ -10,7 +10,7 @@ namespace HORTIUSERCOMMAND.DOMAIN.MODEL
     {
         public UserSession() { }
 
-        public UserSession(ISessionCommandSignature signature)
+        public UserSession(IUserSessionCommandSignature signature)
         {
             Id = signature.IdSession;
             DsLogin = signature.Login;
@@ -32,6 +32,6 @@ namespace HORTIUSERCOMMAND.DOMAIN.MODEL
         [BsonRepresentation(BsonType.String)]
         public DateTime DtCreation => DateTime.Now;
         [BsonRepresentation(BsonType.String)]
-        public DateTime DtSessionLimit => BoSessionExpire ? DateTime.Now.AddMinutes(Constant.SessionLimit) : DateTime.MaxValue;
+        public DateTime DtSessionLimit => BoSessionExpire ? DateTime.Now.AddMinutes(HelperConstant.SessionLimit) : DateTime.MaxValue;
     }
 }

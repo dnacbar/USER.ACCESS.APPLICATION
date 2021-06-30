@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.DOMAIN.INTERFACE.SERVICE
 {
-    public interface ISessionQueryService
+    public interface IUserSessionService
     {
         Task<bool> GetUserSession(UserSession userSession);
     }

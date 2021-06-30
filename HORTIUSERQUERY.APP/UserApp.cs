@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.APP
 {
-    public sealed class UserQueryApp : IUserQueryApp
+    public sealed class UserApp : IUserApp
     {
-        private readonly IUserQueryService _userQueryService;
-        public UserQueryApp(IUserQueryService userQueryService)
+        private readonly IUserService _userQueryService;
+        public UserApp(IUserService userQueryService)
         {
             _userQueryService = userQueryService;
         }

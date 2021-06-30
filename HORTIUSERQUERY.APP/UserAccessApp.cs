@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERQUERY.APP
 {
-    public sealed class UserAccessQueryApp : IUserAccessQueryApp
+    public sealed class UserAccessApp : IUserAccessApp
     {
-        private readonly ISessionCommandService _sessionCommandService;
-        private readonly IUserAccessQueryService _userAccessQueryService;
+        private readonly HORTIUSERCOMMAND.DOMAIN.INTERFACE.SERVICE.IUserSessionService _sessionCommandService;
+        private readonly IUserAccessService _userAccessQueryService;
 
-        public UserAccessQueryApp(ISessionCommandService sessionCommandService,
-                                  IUserAccessQueryService userAccessQueryService)
+        public UserAccessApp(HORTIUSERCOMMAND.DOMAIN.INTERFACE.SERVICE.IUserSessionService sessionCommandService,
+                                  IUserAccessService userAccessQueryService)
         {
             _sessionCommandService = sessionCommandService;
             _userAccessQueryService = userAccessQueryService;
@@ -24,7 +24,7 @@ namespace HORTIUSERQUERY.APP
         {
             var userAccessResult = await _userAccessQueryService.AuthenticateUserAccess(signature);
 
-            var createdSessionResult = await _sessionCommandService.CreateSessionService(new SessionCommandSignature
+            var createdSessionResult = await _sessionCommandService.CreateSessionService(new UserSessionCommandSignature
             {
                 Token = userAccessResult.Token,
                 Login = signature.Login,
@@ -41,7 +41,7 @@ namespace HORTIUSERQUERY.APP
 
         public async Task LogoutUserAccess(IUserLogoutQuerySignature signature)
         {
-            await _sessionCommandService.DeleteSessionService(new SessionCommandSignature
+            await _sessionCommandService.DeleteSessionService(new UserSessionCommandSignature
             {
                 Token = signature.Token,
                 Login = signature.Login,

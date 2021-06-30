@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace HORTIUSERCOMMAND.DOMAIN.INTERFACE.REPOSITORY
 {
-    public interface IUserCommandRepository
+    public interface IUserRepository
     {
         Task CreateUser(User user);
         Task InactiveUser(User user);
