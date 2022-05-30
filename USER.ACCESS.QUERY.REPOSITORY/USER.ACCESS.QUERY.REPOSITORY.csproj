@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\USER.ACCESS.COMMAND.DOMAIN\USER.ACCESS.COMMAND.DOMAIN.csproj" />
+    <ProjectReference Include="..\USER.ACCESS.COMMAND.REPOSITORY\USER.ACCESS.COMMAND.REPOSITORY.csproj" />
+  </ItemGroup>
+
+</Project>
